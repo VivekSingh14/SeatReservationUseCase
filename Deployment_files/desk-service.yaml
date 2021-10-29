@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: desk-service
+  labels:
+    app: desk
+spec:
+  type: NodePort
+  ports:
+    - nodePort: 32320
+      port: 8082
+      protocol: TCP
+      targetPort: 8082
+  selector:
+    app: desk-container
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: desk
+spec:
+  selector:
+    matchLabels:
+      app: desk-container
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: desk-container
+    spec:
+      containers:
+      - name: desk
+        image: vivek1411/desktempo1:latest
+        stdin: true
+        tty: true
+        ports:
+          - containerPort: 8082

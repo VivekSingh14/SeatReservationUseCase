@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: employee-service
+  labels:
+    app: employee
+spec:
+  type: NodePort
+  ports:
+    - nodePort: 32322
+      port: 8081
+      protocol: TCP
+      targetPort: 8081
+  selector:
+    app: employee-container
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee
+spec:
+  selector:
+    matchLabels:
+      app: employee-container
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: employee-container
+    spec:
+      containers:
+      - name: employee
+        image: vivek1411/employeeservice:latest
+        stdin: true
+        tty: true
+        ports:
+          - containerPort: 8081

@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: controller-service
+  labels:
+    app: controller
+spec:
+  type: NodePort
+  ports:
+    - nodePort: 32325
+      port: 8083
+      protocol: TCP
+      targetPort: 8083
+  selector:
+    app: controller-container
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: controller
+spec:
+  selector:
+    matchLabels:
+      app: controller-container
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: controller-container
+    spec:
+      containers:
+      - name: controller
+        image: vivek1411/controllerseatreserve:latest
+        stdin: true
+        tty: true
+        env:
+        - name: EMPLOYEE_URL
+          value: "http://employee-service:8081/api/v1/employee/{employeeId}"
+        - name: DESK_URL
+          value: "http://desk-service:8082/api/v1/desks" 
+        ports:
+          - containerPort: 8083
