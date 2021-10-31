@@ -37,11 +37,11 @@ public class ReserveController {
 	DeskRepository deskRepository;
 	
 	
-	@PostMapping("/reserve/{id}")
+	/*@PostMapping("/reserve/{id}")
     public Reserve reserveSeat(@PathVariable(value = "id") Long employeeId, @RequestBody ReserveValidation data)
         throws ResourceNotFoundException, ParseException{
 		/*Employee employee = employeeRepository.findById(employeeId)
-				.orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));*/
+				.orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
 		//System.out.println(employee.getEmailId()+" "+ employee.getFirstName()+ " ");
 		
 		RestTemplate restTemplate = new RestTemplate();
@@ -60,7 +60,7 @@ public class ReserveController {
 		
 		Reserve reserve = new Reserve(data.getStartDate() , data.getEndDate(), employee1, desks[0]);
 		return reserveRepository.save(reserve);
-	}
+	}*/
 	
 	@GetMapping("/employee/{username}")
 	public ResponseEntity<Employee> getEmployee(@PathVariable(value = "username") String username) {

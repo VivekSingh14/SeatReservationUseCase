@@ -66,7 +66,7 @@ public class AuthController {
 		RestTemplate restTemplate = new RestTemplate();
 		
 		ResponseEntity<Desk[]> response1 =
-				  restTemplate.getForEntity(deskUrl,
+				  restTemplate.getForEntity("http://0.0.0.0:8082/api/v1/desks",
 				  Desk[].class);
 				Desk[] desks = response1.getBody();
 		
@@ -77,7 +77,7 @@ public class AuthController {
 		if(SecurityContextHolder.getContext().getAuthentication().getName().equals(emplist.get(i).getEmailId())) {
 			
 			//Long employeeId = emplist.get(i).getId();
-			response = restTemplate.getForEntity(employeeUrl,
+			response = restTemplate.getForEntity("http://0.0.0.0:8081/api/v1/employee/{employeeId}",
 					Employee.class, emplist.get(i).getId());
 		}
 		}
@@ -90,6 +90,9 @@ public class AuthController {
         }
         Reserve reserve = null;
         for(int i=0; i< desks.length;i++) {
+        	if(tempDesks.length == 0 && desks[i].getOffice().equals(employee1.getOfficeLocation())) {
+    				reserve = new Reserve(data.getStartDate() , data.getEndDate(), employee1, desks[i]);
+        	}
         	for(int j=0;j<tempDesks.length;j++) {
         		if(desks[i] != tempDesks[j]) {
         			if(desks[i].getOffice().equals(employee1.getOfficeLocation())) {
