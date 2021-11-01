@@ -24,6 +24,7 @@ import gslab.service.employee.model.Employee;
 import gslab.service.employee.model.Role;
 import gslab.service.employee.repository.EmployeeRepository;
 import gslab.service.employee.repository.RoleRepository;
+import gslab.service.employee.services.EmployeeService;
 import gslab.service.employee.services.SequenceGeneratorService;
 
 
@@ -45,16 +46,17 @@ public class EmployeeController {
 	@Autowired
 	private SequenceGeneratorService sequenceGeneratorService;
 	
+	@Autowired
+	private EmployeeService employeeservice;
+	
 	@GetMapping("/employees")
 	public List<Employee> getAllEmployees(){
 		return employeeRepository.findAll();
 	}
 	
 	@GetMapping("/employee/{id}")
-	public ResponseEntity < Employee > getEmployeeById(@PathVariable(value = "id") Long employeeId)
-		    throws ResourceNotFoundException {
-		        Employee employee = employeeRepository.findById(employeeId).orElseThrow(()-> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
-		        return ResponseEntity.ok().body(employee);
+	public ResponseEntity < Employee > getEmployeeById(@PathVariable(value = "id") Long employeeId) throws ResourceNotFoundException {
+		        return ResponseEntity.ok().body(employeeservice.getEmployeeById(employeeId));
 		    }
 	
 	@PostMapping("/employees")
